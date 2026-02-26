@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A letter to u</title>
+  <style>
+    :root { --w: 460px; --h: 280px; }
+    body{
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      background: #fff9e6;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color:#222;
+    }
+    .wrap{ width:min(92vw, 520px); text-align:center; }
+    h1{ font-size:18px; font-weight:600; margin:0 0 18px; opacity:.9; }
+
+    /* 信封 */
+    .envelope-area{ display:grid; place-items:center; margin-bottom:16px; }
+    .envelope{
+      width: var(--w); height: var(--h);
+      position:relative;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .2s ease;
+      outline:none;
+    }
+    .envelope:active{ transform: scale(.98); }
+
+    /* 信封主体 */
+    .env-body{
+      position:absolute; inset:0;
+      background: #ffd6e7;
+      border-radius: 14px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.12);
+      overflow:hidden;
+    }
+
+    /* 下三角 */
+    .env-bottom{
+      position:absolute; left:0; right:0; bottom:-1px; height:60%;
+      background: linear-gradient(180deg,#ffffff,#f3f3f8);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      opacity:.95;
+    }
+
+    /* 两侧折角 */
+    .env-left{
+      position:absolute; inset:0;
+      background: #ffcce0;
+      clip-path: polygon(0 0, 50% 55%, 0 100%);
+      opacity:.85;
+    }
+    .env-right{
+      position:absolute; inset:0;
+      background: #ffcce0;
+      clip-path: polygon(100% 0, 50% 55%, 100% 100%);
+      opacity:.85;
+    }
+
+    /* 盖子（可翻开） */
+    .env-flap{
+      position:absolute; inset:0;
+      background: #ffb6d5;
+      clip-path: polygon(0 0, 100% 0, 50% 62%);
+      transform-origin: top;
+      transition: transform .6s ease;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.06);
+    }
+
+    /* 信纸（可上滑出现） */
+    .letter{
+      position:absolute;
+      left:14px; right:14px; bottom:14px;
+      height: 74%;
+      background: #fffdf7;
+      border-radius: 12px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
+      transform: translateY(52px);
+      transition: transform .7s ease .08s, opacity .4s ease .08s;
+      opacity:0;
+      padding:14px 14px 12px;
+      text-align:left;
+      overflow:auto;
+    }
+    .letter h2{ margin:0 0 8px; font-size:14px; font-weight:700; }
+    .letter p{ margin:0 0 10px; line-height:1.55; font-size:14px; }
+    .letter .sig{ margin-top:8px; opacity:.8; }
+
+    /* 打开后的状态 */
+    .open .env-flap{ transform: rotateX(180deg); }
+    .open .letter{ transform: translateY(-6px); opacity:1; }
+
+    .hint{ font-size:13px; opacity:.75; margin:10px 0 0; }
+
+    /* 备用：按钮 */
+    .btn{
+      margin-top:10px;
+      display:inline-block;
+      border:0;
+      background:#111;
+      color:#fff;
+      padding:10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .btn:active{ transform: scale(.99); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>click to open</h1>
+
+    <div class="envelope-area">
+      <div class="envelope" id="env" role="button" tabindex="0" aria-label="打开信封">
+        <div class="env-body"></div>
+        <div class="env-left"></div>
+        <div class="env-right"></div>
+        <div class="env-bottom"></div>
+        <div class="env-flap"></div>
+
+        <div class="letter" id="letter">
+          <h2>To Selin</h2>
+
+          <!-- 这里放你的信内容（可直接粘贴你那段英文） -->
+          <p>
+            I want to tell you how i truely feel.<br>
+            Before I met you, I didn't really believe in love.<br>
+            But being with you changed that.
+          </p>
+          <p>
+            Since I met you, everything changed. Even games don't seem as fun anymore,
+            and problems don't make me feel that difficult.<br>
+            I find myself thinking about you all the time.
+          </p>
+          <p>
+            You've become really important to me.<br>
+            I like you — not just as a friend.
+          </p>
+          <p>
+            So… can I stay by your side?
+          </p>
+
+          <p class="sign">- Tianhe Chen)</p>
+        </div>
+      </div>
+
+      <!--<div class="hint">（也可以按回车键打开）</div>-->
+      <!--<button class="btn" id="btn">打开 / 关闭</button>-->
+    </div>
+  </div>
+
+  <script>
+    const env = document.getElementById('env');
+    const btn = document.getElementById('btn');
+
+    function toggleOpen() {
+      env.classList.toggle('open');
+    }
+
+    env.addEventListener('click', toggleOpen);
+    btn.addEventListener('click', toggleOpen);
+
+    env.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleOpen();
+      }
+    });
+  </script>
+</body>
+</html>
