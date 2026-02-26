@@ -93,7 +93,7 @@
 
     /* 信纸（可上滑出现） */
     .letter{
-      position:absolute;
+      /*position:absolute;
       left:14px; right:14px; bottom:14px;
       height: 74%;
       background: #fffdf7;
@@ -106,7 +106,29 @@
       text-align:left;
       overflow:auto;
       border: 1px solid rgba(0,0,0,.06);
-      background: linear-gradient(180deg, #fffdf7 0%, #fff7ea 100%);
+      background: linear-gradient(180deg, #fffdf7 0%, #fff7ea 100%);*/
+      position:absolute;
+      left:14px; right:14px; bottom:14px;
+      height: 74%;
+
+      background:
+      repeating-linear-gradient(
+      to bottom,
+      #fffdf7 0px,
+      #fffdf7 27px,
+      rgba(0,0,0,0.08) 28px
+      );
+
+      border-radius: 12px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
+      transform: translateY(52px);
+      transition: transform .7s ease .08s, opacity .4s ease .08s;
+      opacity:0;
+      padding:20px;
+      text-align:left;
+      overflow:auto;
+      border: 1px solid rgba(0,0,0,.06);
+      line-height: 28px;
     }
     .letter h2{ margin:0 0 8px; font-size:14px; font-weight:700; }
     .letter p{ margin:0 0 10px; line-height:1.55; font-size:14px; }
@@ -149,25 +171,7 @@
           <h2>To Selin</h2>
 
           <!-- 这里放你的信内容（可直接粘贴你那段英文） -->
-          <p>
-            I want to tell you how i truely feel.<br>
-            Before I met you, I didn't really believe in love.<br>
-            But being with you changed that.
-          </p>
-          <p>
-            Since I met you, everything changed. Even games don't seem as fun anymore,
-            and problems don't make me feel that difficult.<br>
-            I find myself thinking about you all the time.
-          </p>
-          <p>
-            You've become really important to me.<br>
-            I like you — not just as a friend.
-          </p>
-          <p>
-            So… can I stay by your side?
-          </p>
-
-          <p class="sign">- Tianhe Chen</p>
+          
         </div>
       </div>
 
@@ -193,9 +197,70 @@
         toggleOpen();
       }
     });
+    const textLines = [
+  "I want to tell you how I truly feel.",
+  "Before I met you, I didn't really believe in love.",
+  "But being with you changed that.",
+  "",
+  "Since I met you, everything changed.",
+  "Even games don't seem as fun anymore,",
+  "and problems don't feel that difficult.",
+  "I find myself thinking about you all the time.",
+  "",
+  "You've become really important to me.",
+  "I like you — not just as a friend.",
+  "",
+  "So… can I stay by your side?"
+];
+
+const signatureText = "- Tianhe Chen";
+
+let lineIndex = 0;
+let charIndex = 0;
+const speed = 35;
+let started = false;
+
+function typeLine() {
+  if (lineIndex < textLines.length) {
+    const currentLine = textLines[lineIndex];
+
+    if (charIndex < currentLine.length) {
+      document.getElementById("typewriter").innerHTML += currentLine.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeLine, speed);
+    } else {
+      document.getElementById("typewriter").innerHTML += "<br>";
+      lineIndex++;
+      charIndex = 0;
+      setTimeout(typeLine, speed);
+    }
+  } else {
+    typeSignature();
+  }
+}
+
+function typeSignature() {
+  let i = 0;
+  function type() {
+    if (i < signatureText.length) {
+      document.getElementById("signature").innerHTML += signatureText.charAt(i);
+      i++;
+      setTimeout(type, 40);
+    }
+  }
+  type();
+}
+
+env.addEventListener("click", () => {
+  if (env.classList.contains("open") && !started) {
+    started = true;
+    typeLine();
+  }
+});
   </script>
 </body>
 </html>
+
 
 
 
