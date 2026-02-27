@@ -111,13 +111,18 @@
       left:14px; right:14px; bottom:14px;
       height: 74%;
 
-      background:
-      repeating-linear-gradient(
-      to bottom,
-      #fffdf7 0px,
-      #fffdf7 29px,
-      rgba(0,0,0,0.08) 30px
-      );
+      background-color: #fffdf7;
+background-image: linear-gradient(
+  to bottom,
+  transparent 29px,
+  rgba(0,0,0,0.10) 29px,
+  rgba(0,0,0,0.10) 30px
+);
+background-size: 100% 30px;
+background-repeat: repeat;
+background-attachment: local;
+background-origin: content-box;
+background-clip: content-box;
 
       border-radius: 12px;
       box-shadow: 0 10px 18px rgba(0,0,0,.10);
@@ -132,8 +137,18 @@
       background-attachment: local;
       background-repeat: repeat;
     }
-    .letter h2{ margin:0; font-size:14px; font-weight:700;line-height: 30px; }
-    .letter p{ margin:0; line-height:30px; font-size:14px; }
+  .letter h2{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.letter p{
+  margin: 0;
+  font-size: 14px;
+  line-height: 30px;
+}
     .letter .sig{ margin-top:8px; opacity:.8; }
 
     /* 打开后的状态 */
@@ -200,10 +215,9 @@ const textLines = [
   "",
   "You've become really important to me.",
   "I like you — not just as a friend.",
-  "",
-  "So… can I stay by your side?"
+  ""
 ];
-
+const finalLine = "So… can I stay by your side?";
 const signatureText = "- Tianhe Chen";
 
 let started = false;
@@ -213,7 +227,8 @@ const speed = 35;
 
 function typeNext() {
   if (lineIndex >= textLines.length) {
-    typeSignature();
+    // 前面全部打完 → 停顿一下
+    setTimeout(typeFinalLine, 800);
     return;
   }
 
@@ -229,6 +244,23 @@ function typeNext() {
     charIndex = 0;
     setTimeout(typeNext, speed);
   }
+}
+function typeFinalLine() {
+  let i = 0;
+  const slowSpeed = 80; // 慢一点
+
+  function type() {
+    if (i < finalLine.length) {
+      typeEl.innerHTML += finalLine.charAt(i);
+      i++;
+      setTimeout(type, slowSpeed);
+    } else {
+      typeEl.innerHTML += "<br>";
+      typeSignature();
+    }
+  }
+
+  type();
 }
 
 function typeSignature() {
@@ -260,6 +292,7 @@ env.addEventListener('click', openAndType);
 </script>
 </body>
 </html>
+
 
 
 
