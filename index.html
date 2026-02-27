@@ -189,8 +189,9 @@
           <div class="paper">
             <div class="lines"></div>
             <div class="content">
-             
-              <p id="typewriter"></p>
+            <h2 id="toLine"></h2>
+<div class="spacer-line"></div>
+<p id="typewriter"></p>
               <p id="signature"></p>
             </div>
           </div>
@@ -205,7 +206,8 @@
     const letter = document.getElementById('letter');
     const typeEl = document.getElementById('typewriter');
     const sigEl  = document.getElementById('signature');
-
+    const toEl = document.getElementById('toLine');
+    
     const textLines = [
       "To Selin",
       "",
@@ -320,10 +322,30 @@
         sigEl.textContent = "";
         lineIndex = 0;
         charIndex = 0;
-        typeNext();
+        typeToLine();
       }
     }
 
+    function typeToLine() {
+  const toText = "To Selin";
+  let i = 0;
+
+  function step() {
+    if (i < toText.length) {
+      toEl.textContent += toText.charAt(i);
+      i++;
+      setTimeout(step, 140); // To Selin 打慢一点（你想更慢就调大）
+    } else {
+      // 打完 To Selin 停一下，再开始正文
+      setTimeout(() => {
+        typeNext();
+      }, 500);
+    }
+  }
+
+  step();
+}
+    
     env.addEventListener('click', openAndType);
 
     // 可选：键盘回车也能打开（电脑端）
@@ -336,4 +358,5 @@
   </script>
 </body>
 </html>
+
 
