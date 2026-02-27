@@ -10,7 +10,9 @@
        ======================= -->
   <style>
     :root { --w: 380px; --h: 240px; }
-
+.spacer-line{
+  height: 30px;     /* 必须等于你的 line-height */
+}
     /* 页面背景 */
     body{
       margin:0;
@@ -112,14 +114,33 @@
     }
 
     /* 信纸 */
-    .letter{
+.letter{
   position:absolute;
   left:14px; right:14px; bottom:14px;
   height:74%;
-  padding:20px;
+  padding:0;                 /* 关键：外层不 padding */
   overflow:auto;
 
-  background-color:#ffffff;
+  background:#fff;           /* 纸张底色 */
+  border-radius:12px;
+  box-shadow:0 12px 25px rgba(0,0,0,.12);
+}
+
+/* 纸张内部容器：有 padding，横线也在里面 */
+.paper{
+  position:relative;
+  min-height:100%;
+  padding:20px;
+}
+
+/* 横线层：跟着内容一起滚动（因为它在滚动内容里） */
+.lines{
+  position:absolute;
+  left:20px;                 /* 跟 padding 对齐 */
+  right:20px;
+  top:20px;
+  bottom:20px;
+  pointer-events:none;
 
   background-image: linear-gradient(
     to bottom,
@@ -127,37 +148,37 @@
     rgba(0,0,0,0.10) 29px,
     rgba(0,0,0,0.10) 30px
   );
-  background-size:100% 30px;
-  background-repeat:repeat;
-  background-attachment:local;
-  background-origin:content-box;
-  background-clip:content-box;
-
-  border-radius:0;
-  box-shadow:0 12px 25px rgba(0,0,0,.12);
-
-  z-index:2;
+  background-size: 100% 30px;
+  background-repeat: repeat;
 }
 
-    /* 统一文字（更稳：等宽字体，不容易漂） */
-    .letter h2,
-    .letter p,
-    #typewriter,
-    #signature{
-      margin:0;
-      font-size:14px;
-      line-height:30px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    }
+/* 文字层在上面 */
+.content{
+  position:relative;
+  z-index:1;
 
-    #typewriter{
-      white-space: pre-wrap; /* 让 \n 换行生效 */
-    }
+  font-size:14px;
+  line-height:30px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
 
-    #signature{
-      opacity:.85;
-      margin-top: 10px;
-    }
+.content h2,
+.content p,
+#typewriter,
+#signature{
+  margin:0;
+  font-size:14px;
+  line-height:30px;
+}
+
+#typewriter{ white-space: pre-wrap; }
+
+.spacer-line{ height:30px; }
+
+#signature{
+  opacity:.85;
+  margin-top:10px;
+}
 
     /* 打开后状态 */
     .open .env-flap{ transform: rotateX(180deg); }
@@ -181,9 +202,14 @@
         <div class="env-flap"></div>
 
         <div class="letter" id="letter">
-          <h2>To Selin</h2>
-          <p id="typewriter"></p>
-          <p id="signature"></p>
+  <div class="paper">
+    <div class="lines"></div>
+    <div class="content">
+      <h2>To Selin</h2>
+      <div class="spacer-line"></div>
+      <p id="typewriter"></p>
+      <p id="signature"></p>
+   
         </div>
       </div>
     </div>
@@ -322,11 +348,11 @@
     env.addEventListener('click', openAndType);
 
     // 进页面自动开始（延迟一点更有仪式感）
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(openAndType, 900);
+  
     });
   </script>
 </body>
 </html>
+
 
 
