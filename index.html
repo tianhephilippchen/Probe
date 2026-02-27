@@ -129,8 +129,10 @@
       overflow:auto;
       border: 1px solid rgba(0,0,0,.06);
       line-height: 30px;
+      background-attachment: local;
+      background-repeat: repeat;
     }
-    .letter h2{ margin:0 0 8px; font-size:14px; font-weight:700; }
+    .letter h2{ margin:0; font-size:14px; font-weight:700;line-height: 30px; }
     .letter p{ margin:0; line-height:30px; font-size:14px; }
     .letter .sig{ margin-top:8px; opacity:.8; }
 
@@ -169,7 +171,7 @@
 
         <div class="letter" id="letter">
           <h2>To Selin</h2>
-          <p id="typewriter"></p>
+          <p id="typewriter"><br></p>
           <p class="sign" id="signature"></p>
           <!-- 这里放你的信内容（可直接粘贴你那段英文） -->
           
@@ -258,6 +260,7 @@ env.addEventListener('click', openAndType);
 </script>
 </body>
 </html>
+
 
 
 
