@@ -131,7 +131,7 @@
       line-height: 30px;
     }
     .letter h2{ margin:0 0 8px; font-size:14px; font-weight:700; }
-    .letter p{ margin:0 0 10px; line-height:1.55; font-size:14px; }
+    .letter p{ margin:0; line-height:30px; font-size:14px; }
     .letter .sig{ margin-top:8px; opacity:.8; }
 
     /* 打开后的状态 */
@@ -170,7 +170,7 @@
         <div class="letter" id="letter">
           <h2>To Selin</h2>
           <p id="typewriter"></p>
-          <p class="sign" id="signiture"></p>
+          <p class="sign" id="signature"></p>
           <!-- 这里放你的信内容（可直接粘贴你那段英文） -->
           
         </div>
@@ -181,24 +181,12 @@
     </div>
   </div>
 
-  <script>
-    const env = document.getElementById('env');
-    const btn = document.getElementById('btn');
+<script>
+const env = document.getElementById('env');
+const typeEl = document.getElementById("typewriter");
+const sigEl = document.getElementById("signature");
 
-    function toggleOpen() {
-      env.classList.toggle('open');
-    }
-
-    env.addEventListener('click', toggleOpen);
-    btn.addEventListener('click', toggleOpen);
-
-    env.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleOpen();
-      }
-    });
-    const textLines = [
+const textLines = [
   "I want to tell you how I truly feel.",
   "Before I met you, I didn't really believe in love.",
   "But being with you changed that.",
@@ -216,51 +204,61 @@
 
 const signatureText = "- Tianhe Chen";
 
+let started = false;
 let lineIndex = 0;
 let charIndex = 0;
 const speed = 35;
-let started = false;
 
-function typeLine() {
-  if (lineIndex < textLines.length) {
-    const currentLine = textLines[lineIndex];
-
-    if (charIndex < currentLine.length) {
-      document.getElementById("typewriter").innerHTML += currentLine.charAt(charIndex);
-      charIndex++;
-      setTimeout(typeLine, speed);
-    } else {
-      document.getElementById("typewriter").innerHTML += "<br>";
-      lineIndex++;
-      charIndex = 0;
-      setTimeout(typeLine, speed);
-    }
-  } else {
+function typeNext() {
+  if (lineIndex >= textLines.length) {
     typeSignature();
+    return;
+  }
+
+  const line = textLines[lineIndex];
+
+  if (charIndex < line.length) {
+    typeEl.innerHTML += line.charAt(charIndex);
+    charIndex++;
+    setTimeout(typeNext, speed);
+  } else {
+    typeEl.innerHTML += "<br>";
+    lineIndex++;
+    charIndex = 0;
+    setTimeout(typeNext, speed);
   }
 }
 
 function typeSignature() {
   let i = 0;
-  function type() {
+  function step() {
     if (i < signatureText.length) {
-      document.getElementById("signature").innerHTML += signatureText.charAt(i);
+      sigEl.innerHTML += signatureText.charAt(i);
       i++;
-      setTimeout(type, 40);
+      setTimeout(step, 40);
     }
   }
-  type();
+  step();
 }
 
-env.addEventListener("click", () => {
-  if (env.classList.contains("open") && !started) {
+function openAndType() {
+  env.classList.toggle('open');
+
+  if (env.classList.contains('open') && !started) {
     started = true;
-    typeLine();
+    typeEl.innerHTML = "";
+    sigEl.innerHTML = "";
+    lineIndex = 0;
+    charIndex = 0;
+    typeNext();
   }
-});
-  </script>
+}
+
+env.addEventListener('click', openAndType);
+</script>
 </body>
 </html>
+
 
 
 
