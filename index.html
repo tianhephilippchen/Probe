@@ -133,7 +133,7 @@
   background-origin:content-box;
   background-clip:content-box;
 
-  border-radius:12px;
+  border-radius:0;
   box-shadow:0 12px 25px rgba(0,0,0,.12);
 
   z-index:2;
@@ -222,8 +222,8 @@
     let lineIndex = 0;
     let charIndex = 0;
 
-    const normalSpeed = 35;
-    const slowSpeed = 80;
+    const normalSpeed = 55;
+    const slowSpeed = 120;
 
     function scrollToBottom() {
       letter.scrollTop = letter.scrollHeight;
@@ -253,23 +253,42 @@
     }
 
     function typeFinalLine() {
-      let i = 0;
+  const firstPart = "So...";
+  const secondPart = " can I stay by your side?";
 
-      function step() {
-        if (i < finalLine.length) {
-          typeEl.textContent += finalLine.charAt(i);
-          i++;
-          scrollToBottom();
-          setTimeout(step, slowSpeed);
-        } else {
-          typeEl.textContent += "\n";
-          scrollToBottom();
-          typeSignature();
-        }
-      }
+  let i = 0;
 
-      step();
+  function typeFirst() {
+    if (i < firstPart.length) {
+      typeEl.textContent += firstPart.charAt(i);
+      i++;
+      scrollToBottom();
+      setTimeout(typeFirst, 150); // So... 打得慢
+    } else {
+      // 打完 So... 停顿 1 秒
+      setTimeout(typeSecond, 1000);
     }
+  }
+
+  function typeSecond() {
+    let j = 0;
+    function step() {
+      if (j < secondPart.length) {
+        typeEl.textContent += secondPart.charAt(j);
+        j++;
+        scrollToBottom();
+        setTimeout(step, 140); // 后半句也慢
+      } else {
+        typeEl.textContent += "\n";
+        scrollToBottom();
+        typeSignature();
+      }
+    }
+    step();
+  }
+
+  typeFirst();
+}
 
     function typeSignature() {
       let i = 0;
@@ -309,4 +328,5 @@
   </script>
 </body>
 </html>
+
 
