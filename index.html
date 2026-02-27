@@ -4,49 +4,69 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>A letter to u</title>
+
+  <!-- =======================
+       CSS：样式（颜色/布局/横线/阴影）
+       ======================= -->
   <style>
     :root { --w: 380px; --h: 240px; }
-    body{
-      margin:0; min-height:100vh; display:grid; place-items:center;
-      /* background: linear-gradient(135deg, #fffdf2, #ffeef5); */
-      -webkit-text-size-adjust: 100%;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-      /*--color:#222; */
 
-      background-image: url("https://www.transparenttextures.com/patterns/floral-white.png");
+    /* 页面背景 */
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-text-size-adjust: 100%;
+
       background-color: #fff6d9;
+      background-image: url("https://www.transparenttextures.com/patterns/floral-white.png");
     }
 
+    /* 柔光装饰 */
     body::before,
     body::after{
-    content:"";
-    position:fixed;
-    width:300px;
-    height:300px;
-    border-radius:50%;
-    background: radial-gradient(circle, rgba(255,182,213,0.35), transparent 70%);
-    z-index:0;
-    pointer-events:none;
+      content:"";
+      position:fixed;
+      width:300px;
+      height:300px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(255,182,213,0.30), transparent 70%);
+      z-index:0;
+      pointer-events:none;
     }
-    
-    .wrap{
-    width:min(92vw, 520px);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-     }
-    h1{ font-size:18px; font-weight:600; margin:0 0 18px; opacity:.9; }
+    body::before{ top:-110px; left:-110px; }
+    body::after{ bottom:-120px; right:-120px; }
 
-    /* 信封 */
+    .wrap{
+      width:min(92vw, 520px);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      z-index:1;
+    }
+
+    h1{
+      font-size:18px;
+      font-weight:600;
+      margin:0 0 18px;
+      opacity:.85;
+    }
+
+    /* 信封区域 */
     .envelope-area{ display:grid; place-items:center; margin-bottom:16px; }
     .envelope{
-      width: var(--w); height: var(--h);
+      width: var(--w);
+      height: var(--h);
       position:relative;
       cursor:pointer;
       user-select:none;
-      transition: transform .2s ease;
       outline:none;
+      transition: transform .2s ease;
     }
     .envelope:active{ transform: scale(.98); }
 
@@ -55,7 +75,7 @@
       position:absolute; inset:0;
       background: #ffd6e7;
       border-radius: 14px;
-      box-shadow: 0 14px 30px rgba(0,0,0,.12);
+      box-shadow: 0 18px 40px rgba(0,0,0,.14);
       overflow:hidden;
     }
 
@@ -81,7 +101,7 @@
       opacity:.85;
     }
 
-    /* 盖子（可翻开） */
+    /* 盖子 */
     .env-flap{
       position:absolute; inset:0;
       background: #ffb6d5;
@@ -91,96 +111,76 @@
       box-shadow: inset 0 -1px 0 rgba(0,0,0,.06);
     }
 
-    /* 信纸（可上滑出现） */
+    /* 信纸 */
     .letter{
-      /*position:absolute;
-      left:14px; right:14px; bottom:14px;
-      height: 74%;
-      background: #fffdf7;
-      border-radius: 12px;
-      box-shadow: 0 10px 18px rgba(0,0,0,.10);
-      transform: translateY(52px);
-      transition: transform .7s ease .08s, opacity .4s ease .08s;
-      opacity:0;
-      padding:14px 14px 12px;
-      text-align:left;
-      overflow:auto;
-      border: 1px solid rgba(0,0,0,.06);
-      background: linear-gradient(180deg, #fffdf7 0%, #fff7ea 100%);*/
       position:absolute;
       left:14px; right:14px; bottom:14px;
-      height: 74%;
-
-      background-color: #fffdf7;
-background-image: linear-gradient(
-  to bottom,
-  transparent 29px,
-  rgba(0,0,0,0.10) 29px,
-  rgba(0,0,0,0.10) 30px
-);
-background-size: 100% 30px;
-background-repeat: repeat;
-background-attachment: local;
-background-origin: content-box;
-background-clip: content-box;
+      height:74%;
 
       border-radius: 12px;
-      box-shadow: 0 10px 18px rgba(0,0,0,.10);
+      box-shadow: 0 10px 18px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,0.7);
       transform: translateY(52px);
       transition: transform .7s ease .08s, opacity .4s ease .08s;
       opacity:0;
+
       padding:20px;
       text-align:left;
       overflow:auto;
-      line-height: 30px;
-      background-attachment: local;
+
+      /* 作文纸横线：更稳的画法 */
+      background-color: #fffdf7;
+      background-image: linear-gradient(
+        to bottom,
+        transparent 29px,
+        rgba(0,0,0,0.10) 29px,
+        rgba(0,0,0,0.10) 30px
+      );
+      background-size: 100% 30px;
       background-repeat: repeat;
+      background-attachment: local;
+      background-origin: content-box;
+      background-clip: content-box;
+
+      /* 锁死行高 */
+      font-size: 14px;
+      line-height: 30px;
     }
-  .letter h2{
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 30px;
-}
 
-.letter p{
-  margin: 0;
-  font-size: 14px;
-  line-height: 30px;
-}
-    .letter .sig{ margin-top:8px; opacity:.8; }
-
-    /* 打开后的状态 */
-    .open .env-flap{ transform: rotateX(180deg); }
-    .open .letter{ transform: translateY(-6px); opacity:1; }
-
-    .hint{ font-size:13px; opacity:.75; margin:10px 0 0; }
-
-    /* 备用：按钮 */
-    .btn{
-      margin-top:10px;
-      display:inline-block;
-      border:0;
-      background:#111;
-      color:#fff;
-      padding:10px 14px;
-      border-radius: 999px;
-      cursor:pointer;
+    /* 统一文字（更稳：等宽字体，不容易漂） */
+    .letter h2,
+    .letter p,
+    #typewriter,
+    #signature{
+      margin:0;
       font-size:14px;
+      line-height:30px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
-    .btn:active{ transform: scale(.99); }
 
     #typewriter{
-  white-space: pre-wrap;
-}
+      white-space: pre-wrap; /* 让 \n 换行生效 */
+    }
+
+    #signature{
+      opacity:.85;
+      margin-top: 10px;
+    }
+
+    /* 打开后状态 */
+    .open .env-flap{ transform: rotateX(180deg); }
+    .open .letter{ transform: translateY(-6px); opacity:1; }
   </style>
 </head>
+
 <body>
+  <!-- =======================
+       HTML：结构（页面有什么）
+       ======================= -->
   <div class="wrap">
     <h1>click to open</h1>
 
     <div class="envelope-area">
-      <div class="envelope" id="env" role="button" tabindex="0" aria-label="打开信封">
+      <div class="envelope" id="env" role="button" tabindex="0" aria-label="open letter">
         <div class="env-body"></div>
         <div class="env-left"></div>
         <div class="env-right"></div>
@@ -189,147 +189,130 @@ background-clip: content-box;
 
         <div class="letter" id="letter">
           <h2>To Selin</h2>
-          <p id="typewriter"><br></p>
-          <p class="sign" id="signature"></p>
-          <!-- 这里放你的信内容（可直接粘贴你那段英文） -->
-          
+          <p id="typewriter"></p>
+          <p id="signature"></p>
         </div>
       </div>
-
-      <!--<div class="hint">（也可以按回车键打开）</div>-->
-      <!--<button class="btn" id="btn">打开 / 关闭</button>-->
     </div>
   </div>
 
+  <!-- =======================
+       JS：功能（打开/打字/停顿/自动滚动）
+       ======================= -->
+  <script>
+    const env = document.getElementById('env');
+    const letter = document.getElementById('letter');
+    const typeEl = document.getElementById('typewriter');
+    const sigEl  = document.getElementById('signature');
 
+    // 前半部分（正常速度）
+    const textLines = [
+      "I want to tell you how I truly feel.",
+      "Before I met you, I didn't really believe in love.",
+      "But being with you changed that.",
+      "",
+      "Since I met you, everything changed.",
+      "Even games don't seem as fun anymore,",
+      "and problems don't feel that difficult.",
+      "I find myself thinking about you all the time.",
+      "",
+      "You've become really important to me.",
+      "I like you — not just as a friend.",
+      ""
+    ];
 
+    // 最后一句（减速 + 停顿）
+    const finalLine = "So… can I stay by your side?";
+    const signatureText = "- Tianhe Chen";
 
+    let started = false;
+    let lineIndex = 0;
+    let charIndex = 0;
 
+    const normalSpeed = 35;
+    const slowSpeed = 80;
 
-  
-<script>
-const env = document.getElementById('env');
-const letter = document.getElementById('letter');
-const typeEl = document.getElementById("typewriter");
-const sigEl = document.getElementById("signature");
-
-const textLines = [
-  "I want to tell you how I truly feel.",
-  "Before I met you, I didn't really believe in love.",
-  "But being with you changed that.",
-  "",
-  "Since I met you, everything changed.",
-  "Even games don't seem as fun anymore,",
-  "and problems don't feel that difficult.",
-  "I find myself thinking about you all the time.",
-  "",
-  "You've become really important to me.",
-  "I like you — not just as a friend.",
-  ""
-];
-
-const finalLine = "So… can I stay by your side?";
-const signatureText = "- Tianhe Chen";
-
-let started = false;
-let lineIndex = 0;
-let charIndex = 0;
-const speed = 35;
-
-function scrollLetterToBottom() {
-  letter.scrollTop = letter.scrollHeight;
-}
-
-function typeNext() {
-  if (lineIndex >= textLines.length) {
-    setTimeout(typeFinalLine, 800); // 停顿
-    return;
-  }
-
-  const line = textLines[lineIndex];
-
-  if (charIndex < line.length) {
-    typeEl.textContent += line.charAt(charIndex);
-    charIndex++;
-    scrollLetterToBottom();
-    setTimeout(typeNext, speed);
-  } else {
-    typeEl.textContent += "\n";  // 用换行符更稳
-    lineIndex++;
-    charIndex = 0;
-    scrollLetterToBottom();
-    setTimeout(typeNext, speed);
-  }
-}
-
-function typeFinalLine() {
-  let i = 0;
-  const slowSpeed = 80;
-
-  function step() {
-    if (i < finalLine.length) {
-      typeEl.textContent += finalLine.charAt(i);
-      i++;
-      scrollLetterToBottom();
-      setTimeout(step, slowSpeed);
-    } else {
-      typeEl.textContent += "\n";
-      scrollLetterToBottom();
-      typeSignature();
+    function scrollToBottom() {
+      letter.scrollTop = letter.scrollHeight;
     }
-  }
-  step();
-}
 
-function typeSignature() {
-  let i = 0;
-  function step() {
-    if (i < signatureText.length) {
-      sigEl.textContent += signatureText.charAt(i);
-      i++;
-      scrollLetterToBottom();
-      setTimeout(step, 40);
+    function typeNext() {
+      if (lineIndex >= textLines.length) {
+        // 打完前面，停顿一下再打最后一句
+        setTimeout(typeFinalLine, 800);
+        return;
+      }
+
+      const line = textLines[lineIndex];
+
+      if (charIndex < line.length) {
+        typeEl.textContent += line.charAt(charIndex);
+        charIndex++;
+        scrollToBottom();
+        setTimeout(typeNext, normalSpeed);
+      } else {
+        typeEl.textContent += "\n";
+        lineIndex++;
+        charIndex = 0;
+        scrollToBottom();
+        setTimeout(typeNext, normalSpeed);
+      }
     }
-  }
-  step();
-}
 
-function openAndType() {
-  env.classList.add('open'); // 自动打开用 add 更稳
+    function typeFinalLine() {
+      let i = 0;
 
-  if (!started) {
-    started = true;
-    typeEl.textContent = "";
-    sigEl.textContent = "";
-    lineIndex = 0;
-    charIndex = 0;
+      function step() {
+        if (i < finalLine.length) {
+          typeEl.textContent += finalLine.charAt(i);
+          i++;
+          scrollToBottom();
+          setTimeout(step, slowSpeed);
+        } else {
+          typeEl.textContent += "\n";
+          scrollToBottom();
+          typeSignature();
+        }
+      }
 
-    // 让文字里的 \n 生效（像作文纸一行一行）
-    typeEl.style.whiteSpace = "pre-wrap";
-    sigEl.style.whiteSpace = "pre-wrap";
+      step();
+    }
 
-    typeNext();
-  }
-}
+    function typeSignature() {
+      let i = 0;
 
-// 仍然允许点击触发（如果你想保留）
-env.addEventListener('click', openAndType);
+      function step() {
+        if (i < signatureText.length) {
+          sigEl.textContent += signatureText.charAt(i);
+          i++;
+          scrollToBottom();
+          setTimeout(step, 40);
+        }
+      }
 
-// 页面加载后自动开始（延迟一点更有仪式感）
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(openAndType, 900);
-});
-</script>
+      step();
+    }
+
+    function openAndType() {
+      env.classList.add('open'); // 自动打开用 add 更稳
+
+      if (!started) {
+        started = true;
+        typeEl.textContent = "";
+        sigEl.textContent = "";
+        lineIndex = 0;
+        charIndex = 0;
+        typeNext();
+      }
+    }
+
+    // 点击也能触发
+    env.addEventListener('click', openAndType);
+
+    // 进页面自动开始（延迟一点更有仪式感）
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(openAndType, 900);
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
